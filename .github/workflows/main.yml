@@ -1,0 +1,20 @@
+# Workflow name in Actions
+name: Android Unit Test
+
+# Triggers
+on:
+  pull_request:
+    branches:
+      # Trigger actions when we create pull request to this branch
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: "Run Danger"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Danger
+        uses: danger/kotlin@1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
