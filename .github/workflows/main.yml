@@ -17,4 +17,4 @@ jobs:
       - name: Danger
         uses: danger/kotlin@1.2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.DANGER_GITHUB_TOKEN }}
