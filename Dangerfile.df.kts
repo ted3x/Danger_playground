@@ -1,4 +1,5 @@
 import systems.danger.kotlin.*
+import java.io.File
 
 danger(args) {
 
@@ -22,6 +23,19 @@ danger(args) {
         // Work in progress check
         if (pullRequest.title.contains("WIP", false)) {
             warn("PR is classed as Work in Progress")
+        }
+
+        val lintReport = File("$projectDir/build/reports/lint-results.xml")
+
+        if (lintReport.exists()) {
+            val lintXml = lintReport.readText()
+            val lintParser = DangerLintParser()
+            val lintResults = lintParser.parse(lintXml)
+
+            if (lintResults.isNotEmpty()) {
+                val message = "There are ${lintResults.size} lint errors."
+                fail(message)
+            }
         }
     }
 }
