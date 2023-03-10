@@ -1,12 +1,13 @@
 package ge.ted3x.dangerplayground
 
-import androidx.appcompat.app.AppCompatActivity
+import android.hardware.Camera
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //askdkasdk aksdk ask
+        Camera.ACTION_NEW_PICTURE
     }
 }

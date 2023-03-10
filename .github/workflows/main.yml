@@ -1,20 +1,39 @@
-# Workflow name in Actions
-name: Android Unit Test
+name: Code analysis and tests
 
-# Triggers
 on:
   pull_request:
-    branches:
-      # Trigger actions when we create pull request to this branch
+    types: [ opened, synchronize, edited, reopened ]
+  push:
+    branches-ignore:
+      - develop
       - master
+      - 'release/**'
 
 jobs:
-  build:
+  code_analysis_and_tests:
+    name: Code analysis and tests
     runs-on: ubuntu-latest
-    name: "Run Danger"
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v1
-      - name: Danger
-        uses: danger/kotlin@1.2.0
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Run Android Lint
+        run: ./gradlew lint
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Run Danger
         env:
-          GITHUB_TOKEN: ${{ secrets.DANGER_GITHUB_TOKEN }}
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_TOKEN }}
+        run: bundle exec danger
