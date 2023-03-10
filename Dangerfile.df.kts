@@ -1,4 +1,5 @@
 import systems.danger.kotlin.*
+import java.io.File
 
 danger(args) {
 
@@ -11,7 +12,7 @@ danger(args) {
 
         // Changelog
         if (!isTrivial && !changelogChanged && sourceChanges != null) {
-            warn(WordUtils.capitalize("any changes to library code should be reflected in the Changelog.\n\nPlease consider adding a note there and adhere to the [Changelog Guidelines](https://github.com/Moya/contributors/blob/master/Changelog%20Guidelines.md)."))
+            //warn(WordUtils.capitalize("any changes to library code should be reflected in the Changelog.\n\nPlease consider adding a note there and adhere to the [Changelog Guidelines](https://github.com/Moya/contributors/blob/master/Changelog%20Guidelines.md)."))
         }
 
         // Big PR Check
@@ -23,5 +24,12 @@ danger(args) {
         if (pullRequest.title.contains("WIP", false)) {
             warn("PR is classed as Work in Progress")
         }
+
+        android_lint.skip_gradle_task = true
+
+        android_lint.report_file = "app/build/reports/lint-report.xml"
+
+        android_lint.filtering = true
+
     }
 }
