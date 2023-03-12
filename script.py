@@ -21,6 +21,7 @@ for filename in file_list:
             first.extend(data)
 if first is not None:
     f = open(ktlintFile, 'wb')
+    f.write("<?xml version='1.0' encoding='utf-8'?>".encode())
     f.write(bytes('\n', encoding='utf8'))
     f.write(ElementTree.tostring(first))
     f.close()
