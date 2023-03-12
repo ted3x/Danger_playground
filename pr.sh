@@ -7,7 +7,6 @@ set -e
 # shellcheck disable=SC2162
 while read line; do
   module_name=${line%%/*}
-  echo $module_name
   if [[ ${MODULES} != *"${module_name}" ]]; then
     MODULES="${MODULES} ${module_name}"
   fi
@@ -21,6 +20,7 @@ AVAILABLE_TASKS=$(./gradlew tasks --all)
 build_commands=""
 for module in $changed_modules
 do
+  echo $module
   if [[ $AVAILABLE_TASKS =~ $module":app:" ]]; then
     build_commands=${build_commands}" :"${module}":app:assembleDebug :"${module}":app:check"
   fi
