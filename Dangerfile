@@ -15,5 +15,5 @@ checkstyle_format.report '/Users/tedomanvelidze/StudioProjects/Dangerplayground/
 # AndroidLint
 android_lint.report_file = "/Users/tedomanvelidze/StudioProjects/Dangerplayground/build/reports/lint/lint-report.xml"
 android_lint.skip_gradle_task = true
-android_lint.severity = "Error"
+android_lint.severity = "Warning"
 android_lint.lint(inline_mode: true)
