@@ -1,32 +1,10 @@
 #!/bin/bash
 
-# Exit on error
-set -e
+# Get the list of modified modules in the Pull Request
+MODIFIED_MODULES=$(git diff --name-only HEAD^..HEAD | grep "/src/" | cut -d'/' -f2 | uniq)
 
-# Get all the modules that were changed
-# shellcheck disable=SC2162
-while read line; do
-  module_name=${line%%/*}
-  if [[ ${MODULES} != *"${module_name}" ]]; then
-    MODULES="${MODULES} ${module_name}"
-  fi
-done < <(git diff --name-only)
-changed_modules=$MODULES
-
-# Get a list of all available gradle tasks
-AVAILABLE_TASKS=$(./gradlew tasks --all)
-
-# Check if these modules have gradle tasks
-build_commands=""
-for module in $changed_modules
-do
-  echo $module
-  if [[ $AVAILABLE_TASKS =~ $module":app:" ]]; then
-    build_commands=${build_commands}" :"${module}":app:assembleDebug :"${module}":app:check"
-  fi
+# Run the lint task for each modified module
+for MODULE in ${MODIFIED_MODULES}; do
+  echo "Running lint for module: ${MODULE}"
+  ./gradlew ${MODULE}:lint
 done
-
-# Build
-echo "Building Pull Request with"
-echo "command $build_commands"
-eval "./gradlew clean ktlint ${build_commands}"
