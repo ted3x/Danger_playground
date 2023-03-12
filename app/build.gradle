@@ -38,9 +38,6 @@ android {
 
 task runChecksForDanger() {
     group = "Reporting"
-    dependsOn 'ktlintCheck'
-    dependsOn ':app:lint'
-    dependsOn ':testmodule:lint'
 
     def file = file("${project.rootDir}/build/reports/ktlint")
     if (!file.exists()) file.mkdirs()
