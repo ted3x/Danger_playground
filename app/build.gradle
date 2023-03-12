@@ -36,6 +36,15 @@ android {
     }
 }
 
+task runChecksForDanger() {
+    group = "Reporting"
+    dependsOn ':app:lint'
+    dependsOn ':testmodule:lint'
+
+    def lintFile = new File("${project.rootDir}/build/reports/lint")
+    if (!lintFile.exists()) lintFile.mkdirs()
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
